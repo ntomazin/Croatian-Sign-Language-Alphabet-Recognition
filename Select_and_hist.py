@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pickle
+from start import Settings
 #from hand_hist import build_squares, get_hand_hist
 
 def click_and_crop(event, x, y, flags, param):
@@ -49,7 +50,25 @@ def build_squares(img, a,b):
         x=a[0]
     return crop
 
+def add_text(frame, frameHeight):
+    cv2.putText(img=frame, text='Oznaci pravokutnik preko kojeg ces prepoznati histogram', org=(10, 10),
+                fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
+                color=(0, 255, 0))
+
+
+    cv2.putText(img=frame, text='K - stvori pravokutnike', org=(10, frameHeight-5),
+                fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
+                color=(0, 255, 0))
+    cv2.putText(img=frame, text='C - histogram', org=(10, frameHeight-30),
+                fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
+                color=(0, 255, 0))
+    cv2.putText(img=frame, text='R - reset', org=(frameWidth-50, frameHeight - 5),
+                fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
+                color=(0, 255, 0))
+
+
 if __name__ == '__main__':
+    Settings()
     f = True
     while f:
         drawing=False
@@ -64,6 +83,8 @@ if __name__ == '__main__':
         flagPressedK=False
         imgCrop = None
         flagPressedC=False
+        frameWidth = int(vc.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frameHeight = int(vc.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 
         if vc.isOpened(): # try to get the first frame
@@ -80,17 +101,21 @@ if __name__ == '__main__':
             key = cv2.waitKey(20)
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-            if key == ord('k'):
+            add_text(frame, frameHeight)
+
+            #"k" za popunit kvadratima oznaceni pravokutnik
+            if key == ord('k') and drawing:
                 flagPressedK = True
             if flagPressedK:
                 imgCrop = build_squares(frame,refPt[0], refPt[1])
 
-
-            if key == ord('c'):
+            #"c" za otvorit histogram
+            if key == ord('c') and flagPressedK:
                 hsvCrop = cv2.cvtColor(imgCrop, cv2.COLOR_BGR2HSV)
                 flagPressedC = True
                 hist = cv2.calcHist([hsvCrop], [0, 1], None, [180, 256], [0, 180, 0, 256])
                 cv2.normalize(hist, hist, 0, 255, cv2.NORM_MINMAX)
+
             if flagPressedC:
                 dst = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)
                 dst1 = dst.copy()
@@ -112,20 +137,22 @@ if __name__ == '__main__':
             if remove_function == False:
                 cv2.setMouseCallback("preview", lambda *args : None)
 
-            # exit on ESC
+            # ESC za izlazak
             if key == 27:
                 f = False
                 break
-            # on r reset the video and enable to draw new rectangle, DOESNT WORK
-            # treba dodati da se postavi setMouseCallback nazad na funckiju ili drugu funkciju
-            # i ocistit ekran, odnosno maknuti rectagnle
+
+            # "r" za restart
             if key == ord("r"):
                 vc.release()
+                flagPressedC=False
                 break
                 #cv2.setMouseCallback("preview", click_and_crop)
 
     vc.release()
     cv2.destroyWindow("preview")
+    with open("hist", "wb") as f:
+        pickle.dump(hist, f)
 
 
 
