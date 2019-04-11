@@ -1,24 +1,20 @@
 import cv2
 import numpy as np
 import pickle
-from start import Settings
+from GUI import Settings
 #from hand_hist import build_squares, get_hand_hist
 
 def click_and_crop(event, x, y, flags, param):
     # grab references to the global variables
     global refPt, cropping, drawing
 
-    # if the left mouse button was clicked, record the starting
-    # (x, y) coordinates and indicate that cropping is being
-    # performed
+    # obrnuti koordinate za flipan prozor
     if event == cv2.EVENT_LBUTTONDOWN:
         refPt = [(x, y)]
         cropping = True
 
-    # check to see if the left mouse button was released
+    #takoder obrnuti
     elif event == cv2.EVENT_LBUTTONUP:
-        # record the ending (x, y) coordinates and indicate that
-        # the cropping operation is finished
         refPt.append((x, y))
         cropping = False
         drawing=True
@@ -51,7 +47,7 @@ def build_squares(img, a,b):
     return crop
 
 def add_text(frame, frameHeight):
-    cv2.putText(img=frame, text='Oznaci pravokutnik preko kojeg ces prepoznati histogram', org=(10, 10),
+    cv2.putText(img=frame, text='Oznaci pravokutnik preko kojeg ces prepoznati histogram', org=(20, 20),
                 fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
                 color=(0, 255, 0))
 
@@ -62,7 +58,7 @@ def add_text(frame, frameHeight):
     cv2.putText(img=frame, text='C - histogram', org=(10, frameHeight-30),
                 fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
                 color=(0, 255, 0))
-    cv2.putText(img=frame, text='R - reset', org=(frameWidth-50, frameHeight - 5),
+    cv2.putText(img=frame, text='R - reset', org=(frameWidth-150, frameHeight - 5),
                 fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
                 color=(0, 255, 0))
 
@@ -102,15 +98,15 @@ if __name__ == '__main__':
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
             add_text(frame, frameHeight)
-
+            """
             #"k" za popunit kvadratima oznaceni pravokutnik
             if key == ord('k') and drawing:
                 flagPressedK = True
             if flagPressedK:
                 imgCrop = build_squares(frame,refPt[0], refPt[1])
-
+            """
             #"c" za otvorit histogram
-            if key == ord('c') and flagPressedK:
+            if key == ord('c'):# and flagPressedK:
                 hsvCrop = cv2.cvtColor(imgCrop, cv2.COLOR_BGR2HSV)
                 flagPressedC = True
                 hist = cv2.calcHist([hsvCrop], [0, 1], None, [180, 256], [0, 180, 0, 256])
@@ -133,6 +129,7 @@ if __name__ == '__main__':
                 cv2.rectangle(frame, refPt[0], refPt[1], (0, 255, 0), 2)
                 cv2.imshow("preview", frame)
                 remove_function = False
+                imgCrop = build_squares(frame, refPt[0], refPt[1])
 
             if remove_function == False:
                 cv2.setMouseCallback("preview", lambda *args : None)
@@ -144,15 +141,21 @@ if __name__ == '__main__':
 
             # "r" za restart
             if key == ord("r"):
+                cv2.destroyWindow("Thresh")
                 vc.release()
                 flagPressedC=False
                 break
                 #cv2.setMouseCallback("preview", click_and_crop)
 
+            if key == ord("s"):
+                with open("hist", "wb") as f:
+                    pickle.dump(hist, f)
+                print("SAVED")
+
+
     vc.release()
     cv2.destroyWindow("preview")
-    with open("hist", "wb") as f:
-        pickle.dump(hist, f)
+
 
 
 

@@ -53,5 +53,5 @@ class Settings:
         self.back_btn = tkinter.Button(self.f2, text='Back', bg='black', fg='white', font=("Calibri", 18),
                                        activebackground='white', activeforeground='black',
                                        command=lambda: (self.f2.destroy(), self.main_frame()))
-        self.back_btn.place(x=200, y=300)
+        self.back_btn.place(x=280, y=300)
 
