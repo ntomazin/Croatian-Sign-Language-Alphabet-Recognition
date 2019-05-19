@@ -42,8 +42,31 @@ gestures = dict([
     (40, 'nezz'),
     (41, 'LJUBAV'),
     (42, 'FAKIC'),
-    (43, 'ROCK')
-    ])
+    (44, 'ROCK'),
+    (45, 'A'),
+    (46, 'B'),
+    (47, 'C'),
+    (48, 'D'),
+    (49, 'E'),
+    (50, 'F'),
+    (51, 'G'),
+    (52, 'H'),
+    (53, 'I'),
+    (54, 'J'),
+    (55, 'K'),
+    (56, 'L'),
+    (57, 'M'),
+    (58, 'N'),
+    (59, 'O'),
+    (60, 'P'),
+    (61, 'Q'),
+    (62, 'R'),
+    (63, 'S'),
+    (64, 'T'),
+    (65, 'U'),
+    (64, 'V'),
+    (64, 'Z')
+])
 
 """
 helping function for getting the letter representation of the gesture
