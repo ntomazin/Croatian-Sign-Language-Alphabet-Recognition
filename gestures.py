@@ -24,8 +24,8 @@ gestures = dict([
     (22, 'W'),
     (23, 'X'),
     (24, 'Y'),
-    (25, 'nezz'),
-    (26, 'nezz'),
+    (25, 'razmak'),
+    (26, 'GRADEVINA SUCKS'),
     (27, '1'),
     (28, '2'),
     (29, '3'),
@@ -35,14 +35,15 @@ gestures = dict([
     (33, '7'),
     (34, '8'),
     (35, '9'),
-    (36, 'nezz'),
-    (37, 'nezz'),
-    (38, 'nezz'),
-    (39, 'nezz'),
-    (40, 'nezz'),
-    (41, 'LJUBAV'),
-    (42, 'FAKIC'),
-    (44, 'ROCK'),
+    (36, 'CH'),
+    (37, 'Ć'),
+    (38, 'DŽ'),
+    (39, 'Đ'),
+    (40, 'Z'),
+    (41, 'srce'),
+    (42, 'fuck'),
+    (43, 'metal'),#override
+    (44, 'Z'),
     (45, 'A'),
     (46, 'B'),
     (47, 'C'),
@@ -55,17 +56,13 @@ gestures = dict([
     (54, 'J'),
     (55, 'K'),
     (56, 'L'),
-    (57, 'M'),
-    (58, 'N'),
-    (59, 'O'),
-    (60, 'P'),
-    (61, 'Q'),
-    (62, 'R'),
-    (63, 'S'),
-    (64, 'T'),
-    (65, 'U'),
-    (64, 'V'),
-    (64, 'Z')
+    (57, 'O'),
+    (58, 'P'),
+    (59, 'R'),
+    (60, 'S'),
+    (61, 'T'),
+    (62, 'U'),
+    (63, 'V')
 ])
 
 """
@@ -73,6 +70,9 @@ helping function for getting the letter representation of the gesture
 """
 def get_pred_text(pred_class):
     return gestures[pred_class]
+
+def add_gesture(g_id, g_name):
+    gestures[g_id]=g_name
 
 #print(get_pred_text(2))
 #print(get_pred_text(15))

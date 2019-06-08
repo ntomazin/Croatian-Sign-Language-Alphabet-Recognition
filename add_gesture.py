@@ -1,6 +1,6 @@
 import cv2
 import os
-
+from gestures import add_gesture
 image_x, image_y = 50, 50
 
 
@@ -84,8 +84,10 @@ def store_images(g_id):
             if k == ord('c'):
                 if flag_start_capturing == False:
                     flag_start_capturing = True
+                    print("start")
                 else:
                     flag_start_capturing = False
+                    print("stop")
                     frames = 0
             if flag_start_capturing == True:
                 frames += 1
@@ -101,6 +103,7 @@ def store_images(g_id):
 
 init_create_folder()
 g_id = input("Enter gesture no.: ")
-#g_name = input("Enter gesture name/text: ")
+g_name = input("Enter gesture name/text: ")
+add_gesture(g_id, g_name)
 store_images(g_id)
 flip_images(g_id)
