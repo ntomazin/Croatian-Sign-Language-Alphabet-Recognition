@@ -25,7 +25,7 @@ gestures = dict([
     (23, 'X'),
     (24, 'Y'),
     (25, 'razmak'),
-    (26, 'GRADEVINA SUCKS'),
+    (26, 'obrisi'),
     (27, '1'),
     (28, '2'),
     (29, '3'),

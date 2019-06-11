@@ -71,7 +71,6 @@ def store_images(g_id):
                                                       cv2.BORDER_CONSTANT, (0, 0, 0))
 
                     save_img = cv2.resize(save_img, (image_x, image_y))
-
                     save_img = cv2.flip(save_img, 1)
                     cv2.putText(frame, "Capturing...", (30, 60), cv2.FONT_HERSHEY_TRIPLEX, 2, (127, 255, 255))
                     cv2.imwrite("gestures/" + str(g_id) + "/" + str(pic_no) + ".jpg", save_img)
@@ -100,10 +99,13 @@ def store_images(g_id):
             if k == ord('r'):
                 break
 
+def main():
+    init_create_folder()
+    g_id = input("Enter gesture no.: ")
+    g_name = input("Enter gesture name/text: ")
+    add_gesture(g_id, g_name)
+    store_images(g_id)
+    flip_images(g_id)
 
-init_create_folder()
-g_id = input("Enter gesture no.: ")
-g_name = input("Enter gesture name/text: ")
-add_gesture(g_id, g_name)
-store_images(g_id)
-flip_images(g_id)
+if __name__ == '__main__':
+    main()

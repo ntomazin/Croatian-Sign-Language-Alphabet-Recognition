@@ -25,10 +25,13 @@ def main():
         gray_frame = cv2.GaussianBlur(gray_frame, (5, 5), 0)
         difference = cv2.absdiff(first_gray, gray_frame)
         _, difference = cv2.threshold(difference, 25, 255, cv2.THRESH_BINARY)
-        difference=difference[80:350,350:600]
+        #difference=difference[80:350,350:600]
         cv2.rectangle(frame, (350, 80), (600, 350), (0, 255, 0), 2)
-        #cv2.imshow("First frame", first_frame)
+
+        cv2.imshow("First frame", first_frame)
         cv2.imshow("Frame", frame)
+        cv2.rectangle(difference, (350, 80), (600, 350), (0, 255, 0), 2)
+
         cv2.imshow("difference", difference)
         k = cv2.waitKey(30) & 0xff
         if k == 27:

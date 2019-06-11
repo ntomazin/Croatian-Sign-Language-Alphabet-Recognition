@@ -265,7 +265,10 @@ def recognize_with_background_substraction():
     cam.release()
     cv2.destroyAllWindows()
 
+def main():
+    keras_predict(model, np.zeros((50, 50), dtype=np.uint8))
+    # recognize_with_hist()
+    recognize_with_background_substraction()
 
-keras_predict(model, np.zeros((50, 50), dtype=np.uint8))
-#recognize_with_hist()
-recognize_with_background_substraction()
+if __name__ == '__main__':
+    main()

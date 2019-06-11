@@ -47,9 +47,9 @@ def build_squares(img, a,b):
     return crop
 
 def add_text(frame, frameHeight):
-    cv2.putText(img=frame, text='Oznaci pravokutnik preko kojeg ces prepoznati histogram', org=(20, 20),
-                fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
-                color=(0, 255, 0))
+    #cv2.putText(img=frame, text='Oznaci pravokutnik preko kojeg ces prepoznati histogram', org=(20, 20),
+                #fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.8,
+                #color=(0, 255, 0))
 
 
     cv2.putText(img=frame, text='K - stvori pravokutnike', org=(10, frameHeight-5),

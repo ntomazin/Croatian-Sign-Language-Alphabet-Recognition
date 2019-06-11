@@ -1,6 +1,5 @@
 import numpy as np
 import pickle
-import time
 import cv2, os
 from glob import glob
 from keras import optimizers
@@ -14,6 +13,10 @@ from keras.utils import np_utils
 from keras.callbacks import EarlyStopping
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
+import matplotlib.pyplot as plt
+
+import sklearn
+from sklearn import metrics
 K.set_image_dim_ordering('tf')
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -26,6 +29,16 @@ def get_num_of_classes():
 	return len(glob('/home/piki/Desktop/faks/6.semestar/ZAVRŠNI/Prepoznavanje znakovnog jezika pomoću CNN/gestures/*'))
 
 image_x, image_y = get_image_size()
+
+def confusion_matrix(test_labels, predicted):
+	for i,row in enumerate(predicted):
+		#print(test_labels + " odgovara "+ max(row))
+		#print(test_labels[i])
+
+		if test_labels[i]== row.argmax():
+
+			print("uspio")
+
 
 def cnn_model():
 	#za RNN zadnji sloj CNN-a staviti kao ulaz u RNN
@@ -62,23 +75,54 @@ def train():
 	with open("val_labels", "rb") as f:
 		val_labels = np.array(pickle.load(f), dtype=np.int32)
 
+	with open("test_images", "rb") as f:
+		test_images = np.array(pickle.load(f))
+	with open("test_labels", "rb") as f:
+		test_labels = np.array(pickle.load(f), dtype=np.int32)
+
 	train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
 	val_images = np.reshape(val_images, (val_images.shape[0], image_x, image_y, 1))
 	train_labels = np_utils.to_categorical(train_labels)
 	val_labels = np_utils.to_categorical(val_labels)
 
-	print(val_labels.shape)
+	print(test_labels.shape)
+	print(test_images.shape)
+	test_images=test_images.reshape(12800,50,50,1)
+	print(test_labels)
 
 	model, callbacks_list = cnn_model()
 	model.summary()
 	es = EarlyStopping(monitor='val_loss', min_delta=0, patience=1, verbose=0, mode='auto')
-	model.fit(train_images, train_labels, validation_data=(val_images, val_labels), epochs=50, batch_size=500, callbacks=[es])
+	history = model.fit(train_images, train_labels, validation_data=(val_images, val_labels),verbose= 2, epochs=50, batch_size=500, callbacks=[es])
 	scores = model.evaluate(val_images, val_labels, verbose=0)
-	model.save('cnn_model.h5')
 
-start = time.time()
-train()
-end = time.time()
-time = (end-start)/60
-print("execution time:{0} min".format(time))
-K.clear_session()
+	#confusion_matrix(test_labels, predicted)
+	model.save('cnn_model_test.h5')
+
+	# Plot training & validation accuracy values
+	plt.plot(history.history['acc'])
+	plt.plot(history.history['val_acc'])
+	plt.title('Model accuracy')
+	plt.ylabel('Accuracy')
+	plt.xlabel('Epoch')
+	plt.legend(['Train', 'Test'], loc='upper left')
+	plt.show()
+
+	# Plot training & validation loss values
+	plt.plot(history.history['loss'])
+	plt.plot(history.history['val_loss'])
+	plt.title('Model loss')
+	plt.ylabel('Loss')
+	plt.xlabel('Epoch')
+	plt.legend(['Train', 'Test'], loc='upper left')
+	plt.show()
+
+
+def main():
+	train()
+	K.clear_session()
+
+if __name__ == '__main__':
+    main()
+
+
