@@ -1,0 +1,7 @@
+Potrebno je imati Python verziju 3.x.
+
+Potrebno je instalirati requirementse, tako da se pozicionira terminalom u direktorij te pokrene "pip install -r requirements.txt"
+
+Glavni program se pokreće pokretanjem programa "GUI.py", ali se svaka njegova komponenta može pokrenuti zasebno.
+
+Pri dodavanju geste treba i ažurirati "gestures.py". Doduse to bih trebao automatizirati preko neke jednostavne baze podataka.
