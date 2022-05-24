@@ -14,7 +14,7 @@ sklearn==0.0
 tensorboard==1.13.1
 tensorflow==1.13.1
 tensorflow-estimator==1.13.0
-tensorflow-gpu==1.12.0
+tensorflow-gpu==2.6.4
 tflearn==0.3.2
 Theano==0.9.0
 tqdm==4.28.1
